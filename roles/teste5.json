@@ -1,0 +1,23 @@
+{
+  "name": "teste5",
+  "description": "PREENCHA-ME",
+  "json_class": "Chef::Role",
+  "chef_type": "role",
+  "run_list": [
+  ],
+  "env_run_lists": {
+    "production": [
+      "recipe[teste5::default@0.1.0]"
+    ],
+    "homologation": [
+      "recipe[teste5::default@0.1.0]"
+    ],
+    "test": [
+      "recipe[teste5::default@0.1.0]"
+    ],
+    "development": [
+      "recipe[teste5::default@0.1.0]"
+    ]
+  }
+}
+

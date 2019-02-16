@@ -1,0 +1,92 @@
+stages:
+  - test_lint
+  - test_unit
+  - test_integration
+  - deploy_development
+  - deploy_test
+  - deploy_homologation
+
+variables:
+  REPO_URL: "URL SSH DO PROJETO (CLONE), ex: git@gitlab.produbanbr.corp:grupo/cookbook.git"
+# descomente para que o CI faca tambem o deploy nos nodes de cada
+# environment. isso requer um job no rundeck para cada ambiente
+# veja as instrucoes de como criar seus jobs em
+# https://confluence.ci.gsnet.corp/pages/viewpage.action?pageId=38965000  
+# DEPLOY: "true"
+
+# descomente para usar o rundeck de infra (https://rundeck-infra.dcbr01.corp)
+# INFRA: "true"
+
+Lint Test:
+  stage: test_lint
+  script:
+   - ci_lint
+  tags:
+    - chef-ci
+  only:
+    - branches
+  except:
+    - tags
+    - master
+    - develop
+
+Unit Test:
+  stage: test_unit
+  script:
+   - ci_unit
+  tags:
+    - chef-ci
+  only:
+    - branches
+  except:
+    - tags
+    - master
+    - develop
+
+Integration Test:
+  stage: test_integration
+  script:
+   - ci_integration
+  tags:
+    - chef-ci
+  only:
+    - branches
+  except:
+    - tags
+    - master
+    - develop
+
+Deploy - Development:
+  stage: deploy_development
+  script:
+   - ci_deploy development
+  tags:
+    - chef-ci
+  only:
+    - develop
+  variables:
+    JOB_DEPLOY_DEV: "ID JOB DE DEPLOY EM DEVELOPMENT"
+
+Deploy - Test:
+  stage: deploy_test
+  script:
+   - ci_deploy test
+  tags:
+    - chef-ci
+  when: manual
+  only:
+    - develop
+  variables:
+    JOB_DEPLOY_TEST: "ID JOB DE DEPLOY EM TEST (HG)"
+
+Deploy - Homolog:
+  stage: deploy_homologation
+  script:
+   - ci_deploy homologation
+  tags:
+    - chef-ci
+  when: manual
+  only:
+    - develop
+  variables:
+    JOB_DEPLOY_HOMOLOG: "ID JOB DE DEPLOY EM HOMOLOG (HK)"

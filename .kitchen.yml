@@ -1,0 +1,65 @@
+# Escolha como quer provisionar a infraestrutura de testes
+# Acesse a documentacao em https://confluence.ci.gsnet.corp/display/PRODBRAUTOMACAO/Test+Kitchen
+# Para saber como configurar
+
+# Maquina virtual?
+
+# ---
+# driver:
+#   name: vagrant
+#   box: rhel72
+#   customize:
+#     natdnshostresolver1: 'on'
+#     natdnsproxy1: 'on'
+
+# provisioner:
+#   name: chef_zero
+#   require_chef_omnibus: 12.8.1
+#   environments_path: environments/
+#   multiple_converge: 2
+#   client_rb:
+#     environment: development
+ 
+#   attributes:
+#     chef_client:
+#       config:
+#         log_level: ":info"
+
+# platforms:
+#   - name: centos-7.2
+#     driver:
+#       network:
+#         - ["private_network", {type: dhcp}]
+#         - ["private_network", {type: dhcp}]
+#
+# suites:
+#   - name: default
+#     sudo: true
+#     run_list:
+#       - recipe[teste5::default]
+
+# # Container?
+
+# ---
+# driver:
+#   name: docker
+#   use_sudo: false
+#   image: prbbr-base-rhel7:v1
+#   customize:
+#     natdnshostresolver1: 'on'
+#     natdnsproxy1: 'on'
+
+# provisioner:
+#   name: chef_solo
+#   require_chef_omnibus: 12.8.1
+#   environments_path: environments/
+#   client_rb:
+#     environment: development
+ 
+# platforms:
+#   - name: centos-7.2
+ 
+# suites:
+#   - name: default
+#     run_list:
+#       - recipe[teste5::default]
